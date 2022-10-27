@@ -19,14 +19,13 @@ resource "aws_db_parameter_group" "mysql" {
 
 # Creates DB Subnet Group
 resource "aws_db_subnet_group" "default" {
-  name       = "main"
-  subnet_ids = [aws_subnet.frontend.id, aws_subnet.backend.id]
+  name       = "roboshop-mysql-${var.ENV}"
+  subnet_ids = data.terraform_remote_state.vpc.outputs.PRIVATE_SUBNET_IDS
 
   tags = {
-    Name = "My DB subnet group"
+    Name = "roboshop-subnet-group-${var.ENV}"
   }
 }
-
 
 # Creates Security Group for MySQL
 resource "aws_security_group" "allow_mysql" {
