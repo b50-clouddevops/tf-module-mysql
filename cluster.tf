@@ -7,14 +7,24 @@ resource "aws_db_instance" "mysql" {
   db_name              = "dummy"
   username             = "admin1"
   password             = "RoboShop1"
-  parameter_group_name = "default.mysql5.7"
+  parameter_group_name = aws_db_parameter_group.mysql.name
   skip_final_snapshot  = true                 # True only for non-prod workloads
 }
 
 # Creates Parameter Group 
-resource "aws_db_parameter_group" "default" {
-  name   = "rds-pg"
-  family = "mysql5.6"
+resource "aws_db_parameter_group" "mysql" {
+  name   = "roboshop-mysql-${var.ENV}"
+  family = "mysql5.7"
+}
+
+# Creates DB Subnet Group
+resource "aws_db_subnet_group" "default" {
+  name       = "main"
+  subnet_ids = [aws_subnet.frontend.id, aws_subnet.backend.id]
+
+  tags = {
+    Name = "My DB subnet group"
+  }
 }
 
 
