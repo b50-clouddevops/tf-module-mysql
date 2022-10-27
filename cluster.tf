@@ -9,6 +9,7 @@ resource "aws_db_instance" "mysql" {
   password             = "RoboShop1"
   parameter_group_name = aws_db_parameter_group.mysql.name
   skip_final_snapshot  = true                 # True only for non-prod workloads
+  db_subnet_group_name = aws_db_subnet_group.mysql.name
 }
 
 # Creates Parameter Group 
@@ -18,12 +19,12 @@ resource "aws_db_parameter_group" "mysql" {
 }
 
 # Creates DB Subnet Group
-resource "aws_db_subnet_group" "default" {
+resource "aws_db_subnet_group" "mysql" {
   name       = "roboshop-mysql-${var.ENV}"
   subnet_ids = data.terraform_remote_state.vpc.outputs.PRIVATE_SUBNET_IDS
 
   tags = {
-    Name = "roboshop-subnet-group-${var.ENV}"
+    Name = "roboshop-subnet-group-mysql-${var.ENV}"
   }
 }
 
@@ -61,35 +62,6 @@ resource "aws_security_group" "allow_mysql" {
     Name = "roboshop-mysql-sg-${var.ENV}"
   }
 }
-
-# # Creates Redis Cluster
-# resource "aws_elasticache_cluster" "redis" {
-#   cluster_id           = "roboshop-${var.ENV}"
-#   engine               = "redis"
-#   node_type            = "cache.t3.small"
-#   num_cache_nodes      = 1                      # An ideal prod-cluster should have 3 nodes.
-#   parameter_group_name = aws_elasticache_parameter_group.default.name
-#   engine_version       = "6.x"
-#   port                 = 6379
-#   subnet_group_name    = aws_elasticache_subnet_group.subnet-group.name
-#   security_group_ids   = [aws_security_group.allow_redis.id]
-# }
-
-# # Creates Parameter Group
-# resource "aws_elasticache_parameter_group" "default" {
-#   name   = "roboshop-redis-${var.ENV}"
-#   family = "redis6.x"
-# }
-
-# # Creates subnet Group
-# resource "aws_elasticache_subnet_group" "subnet-group" {
-#   name               = "roboshop-redis-${var.ENV}"
-#   subnet_ids         = data.terraform_remote_state.vpc.outputs.PRIVATE_SUBNET_IDS
-# }
-
-
-
-
 
 
 
