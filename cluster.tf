@@ -4,10 +4,17 @@ resource "aws_db_instance" "mysql" {
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t3.micro"
+  db_name              = "dummy"
   username             = "admin1"
   password             = "RoboShop1"
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = true                 # True only for non-prod workloads
+}
+
+# Creates Parameter Group 
+resource "aws_db_parameter_group" "default" {
+  name   = "rds-pg"
+  family = "mysql5.6"
 }
 
 
