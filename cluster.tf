@@ -1,16 +1,17 @@
 # Creates RDS Instance 
 resource "aws_db_instance" "mysql" {
-  
-  allocated_storage    = 10
-  engine               = "mysql"
-  engine_version       = "5.7"
-  instance_class       = "db.t3.micro"
-  db_name              = "dummy"
-  username             = "admin1"
-  password             = "RoboShop1"
-  parameter_group_name = aws_db_parameter_group.mysql.name
-  skip_final_snapshot  = true                 # True only for non-prod workloads
-  db_subnet_group_name = aws_db_subnet_group.mysql.name
+  identifier             = "roboshop-${var.ENV}"
+  allocated_storage      = 10
+  engine                 = "mysql"
+  engine_version         = "5.7"
+  instance_class         = "db.t3.micro"
+  db_name                = "dummy"
+  username               = "admin1"
+  password               = "RoboShop1"
+  parameter_group_name   = aws_db_parameter_group.mysql.name
+  skip_final_snapshot    = true                 # True only for non-prod workloads
+  db_subnet_group_name   = aws_db_subnet_group.mysql.name
+  vpc_security_group_ids = []
 }
 
 # Creates Parameter Group 
