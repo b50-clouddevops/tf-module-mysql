@@ -1,5 +1,5 @@
 resource "null_resource" "cluster" { 
-  depends_on = []
+  depends_on = [aws_db_instance.mysql]
 
   provisioner "local-exec" {
 command = <<EOF
