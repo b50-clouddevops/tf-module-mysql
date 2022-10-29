@@ -8,6 +8,5 @@ unzip mysql.zip
 cd mysql-main 
 mysql -h ${aws_db_instance.mysql.address} -uadmin1 -pRoboShop1 < shipping.sql
 EOF
-
   }
 }
