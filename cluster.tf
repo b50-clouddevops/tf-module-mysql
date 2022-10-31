@@ -1,10 +1,10 @@
 # Creates RDS Instance 
 resource "aws_db_instance" "mysql" {
   identifier             = "roboshop-mysql-${var.ENV}"
-  allocated_storage      = 10
+  allocated_storage      = var.MYSQL_STORAGE
   engine                 = "mysql"
-  engine_version         = "5.7"
-  instance_class         = "db.t3.micro"
+  engine_version         = var.MYSQL_ENGINE_VERSION
+  instance_class         = var.MYSQL_INSTANCE_CLASS
   db_name                = "dummy"
   username               = "admin1"
   password               = "RoboShop1"
